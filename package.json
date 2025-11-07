@@ -6,7 +6,7 @@
     ],
     "scripts": {
         "install:all": "npm install",
-        "dev:frontend": "cd frontend && npm run start",
+        "dev:frontend": "cd frontend && npm run ionic-start",
         "dev:backend": "cd backend && npm run dev",
         "dev": "concurrently \"npm:dev:frontend\" \"npm:dev:backend\""
     },
