@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import ContactsService from "../services/contacts-service";
 import { HttpError } from "../errors/HttpError.js";
+import { CreateContactSchemaStrict, UpdateContactSchema } from "../validators/contacts.validator";
 
 export class ContactsController {
     public router: Router;
@@ -50,7 +51,8 @@ export class ContactsController {
     private async create(req: Request, res: Response, next: NextFunction) {
         try {
             const payload = req.body;
-            const created = await this.service.create(payload as any);
+            const validated = CreateContactSchemaStrict.parse(payload);
+            const created = await this.service.create(validated as any);
             return res.status(201).json(created);
         } catch (e) {
             throw e;
@@ -63,7 +65,8 @@ export class ContactsController {
             const id = Number(req.params.id);
             if (Number.isNaN(id)) throw new HttpError(400, "Invalid id parameter");
             const payload = req.body;
-            const updated = await this.service.update(id, payload as any);
+            const validated = UpdateContactSchema.parse(payload);
+            const updated = await this.service.update(id, validated as any);
             return res.status(200).json(updated);
         } catch (e) {
             throw e;
