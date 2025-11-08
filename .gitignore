@@ -39,6 +39,8 @@ Thumbs.db
 
 # Prisma
 prisma/migrations/
+prisma/generated/
+node_modules/.prisma/
 .pnp.*
 
 # test / coverage
