@@ -20,6 +20,6 @@ model Contact {
   email                String    @unique @db.VarChar(255)
   phone                String?   @unique @db.VarChar(255)
   birthdate            DateTime?
-  preferredContactTime DateTime  @db.Time
+  preferredContactTime DateTime? @db.Time
   createdAt            DateTime  @default(now())
 }

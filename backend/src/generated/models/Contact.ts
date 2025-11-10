@@ -197,7 +197,7 @@ export type ContactGroupByOutputType = {
   email: string
   phone: string | null
   birthdate: Date | null
-  preferredContactTime: Date
+  preferredContactTime: Date | null
   createdAt: Date
   _count: ContactCountAggregateOutputType | null
   _avg: ContactAvgAggregateOutputType | null
@@ -230,7 +230,7 @@ export type ContactWhereInput = {
   email?: Prisma.StringFilter<"Contact"> | string
   phone?: Prisma.StringNullableFilter<"Contact"> | string | null
   birthdate?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
-  preferredContactTime?: Prisma.DateTimeFilter<"Contact"> | Date | string
+  preferredContactTime?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
 }
 
@@ -240,7 +240,7 @@ export type ContactOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   birthdate?: Prisma.SortOrderInput | Prisma.SortOrder
-  preferredContactTime?: Prisma.SortOrder
+  preferredContactTime?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -253,7 +253,7 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
   name?: Prisma.StringFilter<"Contact"> | string
   birthdate?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
-  preferredContactTime?: Prisma.DateTimeFilter<"Contact"> | Date | string
+  preferredContactTime?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
 }, "id" | "email" | "phone">
 
@@ -263,7 +263,7 @@ export type ContactOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   birthdate?: Prisma.SortOrderInput | Prisma.SortOrder
-  preferredContactTime?: Prisma.SortOrder
+  preferredContactTime?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ContactCountOrderByAggregateInput
   _avg?: Prisma.ContactAvgOrderByAggregateInput
@@ -281,7 +281,7 @@ export type ContactScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
   birthdate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contact"> | Date | string | null
-  preferredContactTime?: Prisma.DateTimeWithAggregatesFilter<"Contact"> | Date | string
+  preferredContactTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Contact"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Contact"> | Date | string
 }
 
@@ -290,7 +290,7 @@ export type ContactCreateInput = {
   email: string
   phone?: string | null
   birthdate?: Date | string | null
-  preferredContactTime: Date | string
+  preferredContactTime?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -300,7 +300,7 @@ export type ContactUncheckedCreateInput = {
   email: string
   phone?: string | null
   birthdate?: Date | string | null
-  preferredContactTime: Date | string
+  preferredContactTime?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -309,7 +309,7 @@ export type ContactUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  preferredContactTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredContactTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -319,7 +319,7 @@ export type ContactUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  preferredContactTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredContactTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -329,7 +329,7 @@ export type ContactCreateManyInput = {
   email: string
   phone?: string | null
   birthdate?: Date | string | null
-  preferredContactTime: Date | string
+  preferredContactTime?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -338,7 +338,7 @@ export type ContactUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  preferredContactTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredContactTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -348,7 +348,7 @@ export type ContactUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  preferredContactTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredContactTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -467,7 +467,7 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     email: string
     phone: string | null
     birthdate: Date | null
-    preferredContactTime: Date
+    preferredContactTime: Date | null
     createdAt: Date
   }, ExtArgs["result"]["contact"]>
   composites: {}
