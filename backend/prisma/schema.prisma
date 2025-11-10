@@ -15,10 +15,11 @@ datasource db {
 }
 
 model Contact {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  phone     String?   @unique @db.VarChar(255)
-  birthdate DateTime?
-  createdAt DateTime  @default(now())
+  id                   Int       @id @default(autoincrement())
+  name                 String    @db.VarChar(255)
+  email                String    @unique @db.VarChar(255)
+  phone                String?   @unique @db.VarChar(255)
+  birthdate            DateTime?
+  preferredContactTime DateTime  @db.Time
+  createdAt            DateTime  @default(now())
 }
