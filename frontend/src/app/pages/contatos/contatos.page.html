@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Agenda de Contatos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <!-- Formulário -->
+  <ion-item>
+    <ion-label position="floating">Nome</ion-label>
+    <ion-input [(ngModel)]="novoContato.nome"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="email" [(ngModel)]="novoContato.email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Telefone</ion-label>
+    <ion-input type="tel" [(ngModel)]="novoContato.telefone"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Data de Nascimento</ion-label>
+    <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="novoContato.nascimento"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Horario de Registro do Contato</ion-label>
+    <ion-datetime display-format="HH:mm" picker-format="HH:mm" [(ngModel)]="novoContato.horaContato"></ion-datetime>
+  </ion-item>
+  <ion-button expand="block" color="success" (click)="salvarContato()">
+    Salvar Contato
+  </ion-button>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Contatos Cadastrados</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let c of contatos; let i = index">
+      <ion-label>
+        <h2>{{ c.nome }}</h2>
+        <p>{{ c.email }} | {{ c.telefone }}</p>
+        <p>Data: {{ c.nascimento | date:'dd/MM/yyyy' }} - Hora: {{ c.horaContato |
+          date:'HH:mm' }}</p>
+      </ion-label>
+      <ion-button fill="clear" color="danger" (click)="excluirContato(i)">
+        Excluir
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
