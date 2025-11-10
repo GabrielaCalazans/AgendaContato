@@ -25,6 +25,28 @@ export const CreateContactSchema = z.object({
             }
             return val;
         }, z.date().optional()),
+    // preferredContactTime: accept Date, ISO datetime, or time-only strings like "HH:mm" or "HH:mm:ss"
+    preferredContactTime: z.preprocess((val) => {
+        if (val === undefined || val === null) return undefined;
+        if (val instanceof Date) return val;
+        if (typeof val === "string") {
+            // time-only like 14:30 or 14:30:00
+            const timeOnly = /^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/;
+            if (timeOnly.test(val)) {
+                const parts = val.split(":").map((p) => Number(p));
+                const now = new Date();
+                now.setHours(parts[0]);
+                now.setMinutes(parts[1]);
+                now.setSeconds(parts[2] ?? 0);
+                now.setMilliseconds(0);
+                return now;
+            }
+            // try full ISO datetime parse
+            const parsed = Date.parse(val);
+            return Number.isNaN(parsed) ? val : new Date(val);
+        }
+        return val;
+    }, z.date().optional()),
 });
 
 // Make schema strict so unknown keys cause validation error
