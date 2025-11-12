@@ -51,21 +51,41 @@ export class ContatosPage {
   }
 
   private containsAt(email: string): boolean {
-    return email.indexOf('@') !== -1;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   private isEmailUnique(email: string): boolean {
     return !this.contatos.some(c => c.email === email);
 }
+
+  private isValidDate(value: string): boolean {
+    if (!value) return false;
+    const d = new Date(value);
+    return !isNaN(d.getTime());
+  }
+
+  private isValidTime(value: string): boolean {
+    if (!value) return false;
+    const d = new Date(value);
+    if (!isNaN(d.getTime())) return true;
+    return /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/.test(value);
+  }
   
   
   async salvarContato() {
     const nome = (this.novoContato.nome || '').trim();
     const email = (this.novoContato.email || '').trim();
     const telefone = (this.novoContato.telefone || '').trim();
+    const nascimento = (this.novoContato.nascimento || '').trim();
+    const horaContato = (this.novoContato.horaContato || '').trim();
 
-    if (!nome || !email) {
-      await this.presentAlert('Preencha pelo menos o nome e o e-mail!', 'Erro');
+    if (!nome || !email || !telefone || !nascimento || !horaContato) {
+      await this.presentAlert('Todos os campos são obrigatórios: nome, e-mail, telefone, data de nascimento e horário para contato.', 'Erro');
       return;
     }
 
@@ -74,8 +94,13 @@ export class ContatosPage {
       return;
     }
 
+    if (!this.isValidEmail(email)) {
+      await this.presentAlert('Email inválido. Deve ter o formato local@dominio.ext (ex: user@example.com)', 'Erro');
+      return;
+    }
+
     if (!this.containsAt(email)) {
-      await this.presentAlert('Email inválido. Deve conter o caractere "@"', 'Erro');
+      await this.presentAlert('Email inválido. Deve ter o formato local@dominio.ext (ex: user@example.com)', 'Erro');
       return;
     }
 
@@ -90,6 +115,17 @@ export class ContatosPage {
         return;
       }
     }
+
+        if (!this.isValidDate(nascimento)) {
+      await this.presentAlert('Data de nascimento inválida. Selecione uma data válida.', 'Erro');
+      return;
+    }
+
+    if (!this.isValidTime(horaContato)) {
+      await this.presentAlert('Horário para contato inválido. Use o seletor de horário ou formato HH:mm.', 'Erro');
+      return;
+    }
+
     this.contatos.push({
       nome,
       email,
