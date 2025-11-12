@@ -1,10 +1,14 @@
 import { z } from "zod";
 
-// Validação para telefone: permite dígitos, espaços, parênteses, +, -, . e tamanho razoável
-const phoneRegex = /^\+?[0-9\s().-]{7,20}$/;
+// Validação para telefone brasileiro: apenas dígitos, 10-11 caracteres
+const phoneRegex = /^\d{10,11}$/;
+// Validação para nome: apenas letras (com acentos) e espaços
+const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/
 
 export const CreateContactSchema = z.object({
-    name: z.string().min(1, { message: "Name is required" }),
+    name: z.string()
+        .min(1, { message: "Name is required" })
+        .regex(nameRegex, { message: "Name can only contain letters and spaces" }),
     email: z.string().email({ message: "Invalid email" }),
     phone: z
         .string()
