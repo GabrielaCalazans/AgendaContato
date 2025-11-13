@@ -15,9 +15,21 @@ export interface Contact {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:3333/api';
+  private baseUrl = 'http://127.0.0.1:3333/api';
 
-  constructor() {}
+  constructor() {
+    // Configurar interceptor de erro global do axios
+    axios.interceptors.response.use(
+      response => response,
+      error => {
+        console.error('Erro na API:', error);
+        if (error.code === 'ERR_NETWORK') {
+          console.error('Verifique se o backend está rodando na porta 3333');
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
 
   // Listar contatos
   async getContacts(): Promise<Contact[]> {
