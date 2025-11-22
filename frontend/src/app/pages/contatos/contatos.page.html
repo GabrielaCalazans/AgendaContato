@@ -34,12 +34,12 @@
     </ion-list-header>
     <ion-item *ngFor="let c of contatos; let i = index">
       <ion-label>
-        <h2>{{ c.nome }}</h2>
-        <p>{{ c.email }} | {{ c.telefone }}</p>
-        <p>Data de Nascimento: {{ c.nascimento | date:'dd/MM/yyyy' }} - Horário para Contato: {{ c.horaContato |
+        <h2>{{ c.name }}</h2>
+        <p>{{ c.email }} | {{ c.phone }}</p>
+        <p>Data de Nascimento: {{ c.birthdate | date:'dd/MM/yyyy' }} - Horário para Contato: {{ c.preferredContactTime |
           date:'HH:mm' }}</p>
       </ion-label>
-      <ion-button fill="clear" color="danger" (click)="excluirContato(i)">
+      <ion-button fill="clear" color="danger" (click)="excluirContato(c, i)">
         Excluir
       </ion-button>
     </ion-item>

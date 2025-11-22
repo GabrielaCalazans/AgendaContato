@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ApiService, Contact } from '../../services/api.service';
 
 interface Contato {
   nome: string;
@@ -15,8 +16,8 @@ interface Contato {
   styleUrls: ['./contatos.page.scss'],
   standalone: false,
 })
-export class ContatosPage {
-  contatos: Contato[] = [];
+export class ContatosPage implements OnInit {
+  contatos: Contact[] = [];
   novoContato = {
     nome: '',
     email: '',
@@ -25,7 +26,24 @@ export class ContatosPage {
     horaContato: ''
   };
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) {}
+  constructor(
+    private alertCtrl: AlertController, 
+    private toastCtrl: ToastController,
+    private apiService: ApiService
+  ) {}
+
+  async ngOnInit() {
+    await this.carregarContatos();
+  }
+
+  async carregarContatos() {
+    try {
+      this.contatos = await this.apiService.getContacts();
+    } catch (error) {
+      console.error('Erro ao carregar contatos:', error);
+      await this.presentToast('Erro ao carregar contatos', 'danger');
+    }
+  }
 
   private async presentToast(message: string, color: 'success' | 'danger' | 'warning' = 'success', duration = 2000) {
     const toast = await this.toastCtrl.create({ message, duration, color });
@@ -61,7 +79,7 @@ export class ContatosPage {
 
   private isEmailUnique(email: string): boolean {
     return !this.contatos.some(c => c.email === email);
-}
+  }
 
   private isValidDate(value: string): boolean {
     if (!value) return false;
@@ -126,19 +144,28 @@ export class ContatosPage {
       return;
     }
 
-    this.contatos.push({
-      nome,
-      email,
-      telefone,
-      nascimento: this.novoContato.nascimento,
-      horaContato: this.novoContato.horaContato
-    });
-    this.novoContato = { nome: '', email: '', telefone: '', nascimento: '', horaContato: '' };
-    await this.presentToast('Contato salvo com sucesso!', 'success');
+    try {
+      // Mapear interface local para interface da API
+      const contactData = {
+        name: nome,
+        email: email,
+        phone: telefone,
+        birthdate: nascimento,
+        preferredContactTime: horaContato
+      };
+
+      const novoContato = await this.apiService.createContact(contactData);
+      this.contatos.push(novoContato);
+      this.novoContato = { nome: '', email: '', telefone: '', nascimento: '', horaContato: '' };
+      await this.presentToast('Contato salvo com sucesso!', 'success');
+    } catch (error) {
+      console.error('Erro ao salvar contato:', error);
+      await this.presentToast('Erro ao salvar contato', 'danger');
+    }
   }
 
 
-  async excluirContato(index: number) {
+  async excluirContato(contact: Contact, index: number) {
     const alert = await this.alertCtrl.create({
       header: 'Excluir Contato',
       message: 'Deseja realmente excluir este contato?',
@@ -146,8 +173,17 @@ export class ContatosPage {
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Excluir',
-          handler: () => {
-            this.contatos.splice(index, 1);
+          handler: async () => {
+            try {
+              if (contact.id) {
+                await this.apiService.deleteContact(contact.id);
+                this.contatos.splice(index, 1);
+                await this.presentToast('Contato excluído com sucesso!', 'success');
+              }
+            } catch (error) {
+              console.error('Erro ao excluir contato:', error);
+              await this.presentToast('Erro ao excluir contato', 'danger');
+            }
           }
         }
       ]
